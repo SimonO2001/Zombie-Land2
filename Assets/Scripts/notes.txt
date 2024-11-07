@@ -1,0 +1,4 @@
+NullReferenceException: Object reference not set to an instance of an object
+ZombieAI.UpdateHealthBar () (at Assets/Scripts/ZombieAI.cs:68)
+ZombieAI.TakeDamage (System.Single damage) (at Assets/Scripts/ZombieAI.cs:55)
+Projectile.OnTriggerEnter2D (UnityEngine.Collider2D collision) (at Assets/Scripts/Projectile.cs:41)
