@@ -6,7 +6,7 @@ public class ZombieAI : MonoBehaviour
     public float moveSpeed = 2f;          // Speed of the zombie movement
     public float chaseRadius = 10f;       // Distance at which the zombie will start chasing the player
     public float maxHealth = 2f;          // Maximum health for the zombie
-    public float damageFromZombie = 1f;   // Damage the zombie deals to the player on contact
+    public float damageFromZombie = 20f;   // Damage the zombie deals to the player on contact
 
     private float currentHealth;          // Current health of the zombie
     public Image healthBarFill;           // Reference to the health bar fill image
@@ -42,7 +42,7 @@ public class ZombieAI : MonoBehaviour
         Vector2 direction = (player.position - transform.position).normalized;
 
         // Move the zombie towards the player
-        rb.linearVelocity = direction * moveSpeed;
+        rb.MovePosition(rb.position + direction * moveSpeed * Time.fixedDeltaTime);
     }
 
     public void TakeDamage(float damage)

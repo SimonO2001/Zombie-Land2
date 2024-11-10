@@ -3,12 +3,26 @@ using UnityEngine;
 public class PlayerShooting : MonoBehaviour
 {
     public GameObject bulletPrefab; // Reference til bullet prefab
-    public Transform firePoint; // Det punkt, hvor projektilet skal spawne
+    public Transform firePoint; // The point where the projectile spawns
     public float bulletSpeed = 10f;
+
+    private PlayerHealth playerHealth; // Reference to PlayerHealth script
+
+    void Start()
+    {
+        // Get the PlayerHealth component from the player
+        playerHealth = GetComponent<PlayerHealth>();
+    }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0)) // Når venstre museknap trykkes
+        // Check if the player is dead; if they are, don't allow shooting
+        if (playerHealth != null && playerHealth.isDead)
+        {
+            return; // Skip shooting if the player is dead
+        }
+
+        if (Input.GetMouseButtonDown(0)) // When the left mouse button is pressed
         {
             Shoot();
         }
@@ -17,7 +31,7 @@ public class PlayerShooting : MonoBehaviour
     void Shoot()
     {
         // Instantiate the bullet at the firePoint's position without rotation (Quaternion.identity)
-        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);  
+        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
 
         // Get the mouse position in world space
@@ -30,11 +44,11 @@ public class PlayerShooting : MonoBehaviour
         Vector2 shootDirection = (mouseWorldPosition - firePoint.position).normalized;
 
         // Apply the direction to the bullet's Rigidbody2D (move it in the direction)
-        rb.linearVelocity = shootDirection * bulletSpeed; // Using linearVelocity here to avoid deprecated warning
+        rb.linearVelocity = shootDirection * bulletSpeed; // Using velocity here instead of linearVelocity
 
         // Rotate the bullet to face the direction it's traveling
         float angle = Mathf.Atan2(shootDirection.y, shootDirection.x) * Mathf.Rad2Deg;
-        bullet.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle)); 
+        bullet.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
 
         // Log the direction and angle for debugging
         Debug.Log("Shoot Direction: " + shootDirection);
